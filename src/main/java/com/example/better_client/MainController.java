@@ -20,10 +20,16 @@ public class MainController {
     @FXML
     private MenuItem close;
 
+
+    @FXML
+    private Button mergeBtn;
+    @FXML
+    private Button clearBtn;
     @FXML
     private ListView<String> pdfFileList;
     @FXML
     private Button selectFile;
+
     @FXML
     void onCloseClick(ActionEvent event) {
         System.out.println(" this is close ");
@@ -63,14 +69,14 @@ public class MainController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("选择文件");
         fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("所有文件", "*.*")
+                new FileChooser.ExtensionFilter("所有文件", "*.pdf")
         );
-        fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("文本文档", "*.txt")
-        );
-
+        ObservableList<String> items = pdfFileList.getItems();
+        if (items == null) {
+            items = FXCollections.observableArrayList();
+        }
         List<File> selectedFiles = fileChooser.showOpenMultipleDialog(null);
-        ObservableList<String> items = FXCollections.observableArrayList();
+//        ObservableList<String> items = FXCollections.observableArrayList();
         if (selectedFiles != null) {
             // 处理选中的文件
             for (File file : selectedFiles) {
@@ -81,4 +87,14 @@ public class MainController {
         pdfFileList.setItems(items);
     }
 
+
+    @FXML
+    void onClearClick(ActionEvent event) {
+        pdfFileList.setItems(null);
+    }
+
+    @FXML
+    void onMergeClick(ActionEvent event) {
+
+    }
 }
