@@ -39,13 +39,14 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="257.0" prefWidth="600.0">
                      <children>
-                        <Button layoutX="148.0" layoutY="37.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="141.0" text="选择PDF文件" />
+                        <Button fx:id="pdfSelect" layoutX="148.0" layoutY="37.0" mnemonicParsing="false" onAction="#onPdfSelect" prefHeight="25.0" prefWidth="141.0" text="选择PDF文件" />
                         <Label layoutX="46.0" layoutY="36.0" prefHeight="25.0" prefWidth="83.0" style="-fx-background-color: #008B8B;" text="    选择文件：" textFill="#fcf9f9" />
                         <Button layoutX="349.0" layoutY="37.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="141.0" text="选择背图PDF" />
-                        <ListView layoutX="46.0" layoutY="124.0" prefHeight="200.0" prefWidth="200.0" />
-                        <ListView layoutX="349.0" layoutY="124.0" prefHeight="200.0" prefWidth="200.0" />
+                        <ListView layoutX="46.0" layoutY="115.0" prefHeight="129.0" prefWidth="200.0" />
                         <Label layoutX="46.0" layoutY="74.0" prefHeight="25.0" prefWidth="129.0" style="-fx-background-color: #008B8B;" text="     选择的PDF文件：" textFill="#f8f6f6" />
                         <Label layoutX="349.0" layoutY="74.0" prefHeight="25.0" prefWidth="129.0" style="-fx-background-color: #008B8B;" text="      选择的背图PDF：" textFill="#f8f8f8" />
+                        <ListView layoutX="349.0" layoutY="115.0" prefHeight="129.0" prefWidth="200.0" />
+                        <Button layoutX="177.0" layoutY="278.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="246.0" text="Button" />
                      </children></AnchorPane>
                     </content>
                 </Tab>
