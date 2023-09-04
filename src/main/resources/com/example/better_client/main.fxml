@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+      prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.better_client.MainController">
+    <children>
+        <MenuBar>
+            <menus>
+                <Menu mnemonicParsing="false" text="文件">
+                    <items>
+                        <MenuItem fx:id="close" mnemonicParsing="false" onAction="#onCloseClick" text="关闭程序"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="帮助">
+                    <items>
+                        <MenuItem fx:id="help" mnemonicParsing="false" onAction="#onHelpClick" text="关于我们"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+        <TabPane prefHeight="383.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab text="   合成   ">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="318.0" prefWidth="600.0"/>
+                    </content>
+                </Tab>
+                <Tab text="  背图  ">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="257.0" prefWidth="600.0"/>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </children>
+</VBox>
