@@ -16,20 +16,42 @@ import java.util.List;
 
 public class MainController {
     @FXML
-    private MenuItem help;
+    private ListView<String> byPdf;
+
+    @FXML
+    private Button clearBtn;
 
     @FXML
     private MenuItem close;
 
+    @FXML
+    private MenuItem help;
 
     @FXML
     private Button mergeBtn;
-    @FXML
-    private Button clearBtn;
+
     @FXML
     private ListView<String> pdfFileList;
+
+    @FXML
+    private ListView<String> pdfList;
+
+    @FXML
+    private Button pdfSelect;
+
+    @FXML
+    private Button selectBYBtn;
+
     @FXML
     private Button selectFile;
+
+    @FXML
+    private Button clearByBtn;
+
+    @FXML
+    private Button clearPdfBtn;
+
+
 
     @FXML
     void onCloseClick(ActionEvent event) {
@@ -96,8 +118,59 @@ public class MainController {
 
     @FXML
     void onMergeClick(ActionEvent event) {
-         if (pdfFileList.getItems().isEmpty()){
-             AlertUtil.showAlert("您还没选择文件，请先选择文件！");
-         }
+        if (pdfFileList.getItems().isEmpty()) {
+            AlertUtil.showAlert("您还没选择文件，请先选择文件！");
+        }
+    }
+
+
+    @FXML
+    void onPdfSelect(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("选择文件");
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("所有文件", "*.pdf")
+        );
+        ObservableList<String> items = pdfList.getItems();
+        if (items == null) {
+            items = FXCollections.observableArrayList();
+        }
+        List<File> selectedFiles = fileChooser.showOpenMultipleDialog(null);
+//        ObservableList<String> items = FXCollections.observableArrayList();
+        if (selectedFiles != null) {
+            // 处理选中的文件
+            for (File file : selectedFiles) {
+                System.out.println("已选中文件: " + file.getAbsolutePath());
+                items.add(file.getName());
+            }
+        }
+        pdfList.setItems(items);
+    }
+
+
+    @FXML
+    void onselectByClick(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("选择文件");
+        Stage stage = (Stage) selectBYBtn.getScene().getWindow();
+        File selectedFile = fileChooser.showOpenDialog(stage);
+        ObservableList<String> items = FXCollections.observableArrayList();
+        if (selectedFile != null) {
+            // 处理选择的文件
+            System.out.println("选择的文件路径: " + selectedFile.getAbsolutePath());
+            items.add(selectedFile.getName());
+        }
+        byPdf.setItems(items);
+    }
+
+    @FXML
+    void onClearByClick(ActionEvent event) {
+        byPdf.setItems(null);
+    }
+
+
+    @FXML
+    void onClearPdfClick(ActionEvent event) {
+        pdfList.setItems(null);
     }
 }

@@ -11,7 +11,8 @@ public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+        Scene scene = new Scene(fxmlLoader.load(), 1000, 800);
+        stage.setTitle("PDF合成工具");
         stage.setScene(scene);
         stage.show();
     }
