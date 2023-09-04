@@ -1,5 +1,6 @@
 package com.example.better_client;
 
+import com.example.better_client.util.AlertUtil;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -95,6 +96,8 @@ public class MainController {
 
     @FXML
     void onMergeClick(ActionEvent event) {
-
+         if (pdfFileList.getItems().isEmpty()){
+             AlertUtil.showAlert("您还没选择文件，请先选择文件！");
+         }
     }
 }
