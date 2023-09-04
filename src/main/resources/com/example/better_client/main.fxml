@@ -4,20 +4,18 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-      prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.better_client.MainController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.better_client.MainController">
     <children>
         <MenuBar>
             <menus>
                 <Menu mnemonicParsing="false" text="文件">
                     <items>
-                        <MenuItem fx:id="close" mnemonicParsing="false" onAction="#onCloseClick" text="关闭程序"/>
+                        <MenuItem fx:id="close" mnemonicParsing="false" onAction="#onCloseClick" text="关闭程序" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="帮助">
                     <items>
-                        <MenuItem fx:id="help" mnemonicParsing="false" onAction="#onHelpClick" text="关于我们"/>
+                        <MenuItem fx:id="help" mnemonicParsing="false" onAction="#onHelpClick" text="关于我们" />
                     </items>
                 </Menu>
             </menus>
@@ -26,12 +24,19 @@
             <tabs>
                 <Tab text="   合成   ">
                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="318.0" prefWidth="600.0"/>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="318.0" prefWidth="600.0">
+                     <children>
+                        <Label layoutX="30.0" layoutY="38.0" prefHeight="31.0" prefWidth="82.0" style="-fx-background-color: #008B8B;" text="    选择文件：" textAlignment="CENTER" textFill="#f8f5f5" />
+                        <Button fx:id="selectFile" layoutX="124.0" layoutY="37.0" mnemonicParsing="false" onAction="#onSelectFileClick" prefHeight="33.0" prefWidth="371.0" text="选择要合成的PDF文件（多选）" />
+                        <ListView fx:id="pdfFileList" layoutX="30.0" layoutY="83.0" prefHeight="176.0" prefWidth="466.0" />
+                        <Button layoutX="177.0" layoutY="268.0" mnemonicParsing="false" text="清空" />
+                        <Button layoutX="310.0" layoutY="268.0" mnemonicParsing="false" text="合成" />
+                     </children></AnchorPane>
                     </content>
                 </Tab>
                 <Tab text="  背图  ">
                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="257.0" prefWidth="600.0"/>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="257.0" prefWidth="600.0" />
                     </content>
                 </Tab>
             </tabs>
