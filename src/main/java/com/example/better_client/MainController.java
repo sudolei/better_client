@@ -3,6 +3,7 @@ package com.example.better_client;
 import com.example.better_client.util.AlertUtil;
 import com.example.better_client.util.PdfMerger;
 import com.example.better_client.util.PdfUtil;
+import com.example.better_client.util.StringUtils;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.TextFlow;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -60,7 +62,10 @@ public class MainController {
     @FXML
     private ProgressBar progressBar;
     @FXML
-    private Button selectFolder;
+    private Button selectFolderBtn;
+
+    @FXML
+    private Label selectFolder;
 
     public void startLoading() {
         progressBar.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
@@ -176,17 +181,30 @@ public class MainController {
             Map<String, Float> m = PdfUtil.getPdfWH(str);
             set.add(m);
         }
-
+        // 如果尺寸有多个，不能合成
         if (set.size() != 1) {
             stopLoading();
             progressBar.setVisible(false);
             AlertUtil.showWarningAlert("您选择的文件尺寸不一致！！！");
             return;
         }
+        // list转数组
         String files[] = new String[observableList.size()];
         observableList.toArray(files);
-        PdfMerger.mergePdf(files, "D:\\iskylei\\pdf\\merged.pdf");
-        AlertUtil.showSuccessAlert("合成成功！");
+        // 文件路径
+        String filePath = selectFolder.getText();
+        if (StringUtils.isEmpty(filePath)) {
+            stopLoading();
+            progressBar.setVisible(false);
+            AlertUtil.showWarningAlert("请先选择文件目录！");
+            return;
+        }
+        // 文件名
+        String resultPdfName = System.currentTimeMillis() + ".pdf";
+        String resultPdf = filePath + File.separator + resultPdfName;
+        // 合并
+        PdfMerger.mergePdf(files,resultPdf);
+        AlertUtil.showSuccessAlert("合成成功！合成文件：" + resultPdf);
         stopLoading();
         progressBar.setVisible(false);
     }
@@ -244,7 +262,15 @@ public class MainController {
 
 
     @FXML
-    void onSelectFolderClick(ActionEvent event){
-
+    void onSelectFolderClick(ActionEvent event) {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("选择文件夹");
+        Stage stage = (Stage) selectFolderBtn.getScene().getWindow();
+        File selectedDirectory = directoryChooser.showDialog(stage);
+        if (selectedDirectory != null) {
+            System.out.println(selectedDirectory.getAbsolutePath());
+            // 可以在这里处理选择的文件夹
+            selectFolder.setText(selectedDirectory.getAbsolutePath());
+        }
     }
 }
