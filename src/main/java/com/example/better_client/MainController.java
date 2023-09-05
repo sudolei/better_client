@@ -4,6 +4,9 @@ import com.example.better_client.util.AlertUtil;
 import com.example.better_client.util.PdfMerger;
 import com.example.better_client.util.PdfUtil;
 import com.example.better_client.util.StringUtils;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.pdf.PdfCopy;
+import com.itextpdf.text.pdf.PdfReader;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,6 +20,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +70,15 @@ public class MainController {
 
     @FXML
     private Label selectFolder;
+
+    @FXML
+    private Button byMergeBtn;
+
+    @FXML
+    private Button selectByFolderBtn;
+
+    @FXML
+    private Label selectByFolder;
 
     public void startLoading() {
         progressBar.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
@@ -149,6 +162,24 @@ public class MainController {
     }
 
     /**
+     * 选择文件夹
+     *
+     * @param event
+     */
+    @FXML
+    void onSelectFolderClick(ActionEvent event) {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("选择文件夹");
+        Stage stage = (Stage) selectFolderBtn.getScene().getWindow();
+        File selectedDirectory = directoryChooser.showDialog(stage);
+        if (selectedDirectory != null) {
+            System.out.println(selectedDirectory.getAbsolutePath());
+            // 可以在这里处理选择的文件夹
+            selectFolder.setText(selectedDirectory.getAbsolutePath());
+        }
+    }
+
+    /**
      * 清空文件列表
      *
      * @param event
@@ -203,19 +234,24 @@ public class MainController {
         String resultPdfName = System.currentTimeMillis() + ".pdf";
         String resultPdf = filePath + File.separator + resultPdfName;
         // 合并
-        PdfMerger.mergePdf(files,resultPdf);
+        PdfMerger.mergePdf(files, resultPdf);
         AlertUtil.showSuccessAlert("合成成功！合成文件：" + resultPdf);
         stopLoading();
         progressBar.setVisible(false);
     }
 
-
+    /**
+     * 选择要插入背图的PDF
+     *
+     * @param event
+     */
     @FXML
     void onPdfSelect(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("选择文件");
+        fileChooser.setTitle("选择pdf文件");
+        fileChooser.setInitialDirectory(new File("D:\\iskylei\\pdf"));
         fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("所有文件", "*.pdf")
+                new FileChooser.ExtensionFilter("PDF文件", "*.pdf")
         );
         ObservableList<String> items = pdfList.getItems();
         if (items == null) {
@@ -227,24 +263,32 @@ public class MainController {
             // 处理选中的文件
             for (File file : selectedFiles) {
                 System.out.println("已选中文件: " + file.getAbsolutePath());
-                items.add(file.getName());
+                items.add(file.getAbsolutePath());
             }
         }
         pdfList.setItems(items);
     }
 
-
+    /**
+     * 选择背面PDF
+     *
+     * @param event
+     */
     @FXML
     void onselectByClick(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("选择文件");
+        fileChooser.setTitle("选择背面PDF文件");
+        fileChooser.setInitialDirectory(new File("D:\\iskylei\\pdf"));
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("PDF文件", "*.pdf")
+        );
         Stage stage = (Stage) selectBYBtn.getScene().getWindow();
         File selectedFile = fileChooser.showOpenDialog(stage);
         ObservableList<String> items = FXCollections.observableArrayList();
         if (selectedFile != null) {
             // 处理选择的文件
             System.out.println("选择的文件路径: " + selectedFile.getAbsolutePath());
-            items.add(selectedFile.getName());
+            items.add(selectedFile.getAbsolutePath());
         }
         byPdf.setItems(items);
     }
@@ -260,17 +304,69 @@ public class MainController {
         pdfList.setItems(null);
     }
 
-
     @FXML
-    void onSelectFolderClick(ActionEvent event) {
+    void onSelectByFolderClick(ActionEvent event) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("选择文件夹");
-        Stage stage = (Stage) selectFolderBtn.getScene().getWindow();
+        Stage stage = (Stage) selectByFolderBtn.getScene().getWindow();
         File selectedDirectory = directoryChooser.showDialog(stage);
         if (selectedDirectory != null) {
             System.out.println(selectedDirectory.getAbsolutePath());
             // 可以在这里处理选择的文件夹
-            selectFolder.setText(selectedDirectory.getAbsolutePath());
+            selectByFolder.setText(selectedDirectory.getAbsolutePath());
         }
+    }
+
+    /**
+     * PDF出入背面图
+     * @param event
+     */
+    @FXML
+    void byMergeClick(ActionEvent event) {
+        if (pdfList.getItems().isEmpty()) {
+            AlertUtil.showWarningAlert("请先选择PDF文件!!!");
+            return;
+        }
+
+        if (byPdf.getItems().isEmpty()) {
+            AlertUtil.showWarningAlert("请先选择背面PDF文件!!!");
+            return;
+        }
+        ObservableList<String> observableList = pdfList.getItems();// 原始PDF
+
+
+        Set set = new HashSet();
+        for (String str : observableList) {
+            System.out.println(str);
+            Map<String, Float> m = PdfUtil.getPdfWH(str);
+            set.add(m);
+        }
+        if (set.size()!=1){
+            AlertUtil.showWarningAlert("选择的PDF文件尺寸不一致!");
+            return;
+        }
+
+        for (String str: byPdf.getItems()){
+            Map<String, Float> m = PdfUtil.getPdfWH(str);
+            set.add(m);
+        }
+        if (set.size()!=1){
+            AlertUtil.showWarningAlert("选择的背面PDF文件尺寸不一致!");
+            return;
+        }
+        // list转数组
+        String files[] = new String[observableList.size()];
+        observableList.toArray(files);
+
+        String insertFile = byPdf.getItems().get(0); // 插入的PDF文件路径
+
+        String filePath = selectByFolder.getText();
+        if (StringUtils.isEmpty(filePath)) {
+            AlertUtil.showWarningAlert("请先选择文件目录！");
+            return;
+        }
+        String resultFileName = "by" + System.currentTimeMillis() + ".pdf";
+        String outputFile = filePath + File.separator + resultFileName;
+        PdfMerger.insertPdf(files, insertFile, outputFile);
     }
 }
