@@ -10,6 +10,7 @@ module com.example.better_client {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires itextpdf;
 
     opens com.example.better_client to javafx.fxml;
     exports com.example.better_client;
