@@ -1,18 +1,24 @@
 package com.example.better_client;
 
 import com.example.better_client.util.AlertUtil;
+import com.example.better_client.util.PdfMerger;
+import com.example.better_client.util.PdfUtil;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class MainController {
     @FXML
@@ -51,14 +57,35 @@ public class MainController {
     @FXML
     private Button clearPdfBtn;
 
+    @FXML
+    private ProgressBar progressBar;
+    @FXML
+    private Button selectFolder;
 
+    public void startLoading() {
+        progressBar.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
+    }
 
+    public void stopLoading() {
+        progressBar.setProgress(0);
+    }
+
+    /**
+     * 退出程序
+     *
+     * @param event
+     */
     @FXML
     void onCloseClick(ActionEvent event) {
         System.out.println(" this is close ");
         Platform.exit();
     }
 
+    /**
+     * 关于我们
+     *
+     * @param event
+     */
     @FXML
     void onHelpClick(ActionEvent event) {
         String message = "1:合成功能实现了PDF合成，校验等功能\n" +
@@ -87,12 +114,18 @@ public class MainController {
         alert.showAndWait();
     }
 
+    /**
+     * 文件选择
+     *
+     * @param event
+     */
     @FXML
     void onSelectFileClick(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("选择文件");
+        fileChooser.setInitialDirectory(new File("D:\\iskylei\\pdf"));
         fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("所有文件", "*.pdf")
+                new FileChooser.ExtensionFilter("PDF文件", "*.pdf")
         );
         ObservableList<String> items = pdfFileList.getItems();
         if (items == null) {
@@ -104,23 +137,58 @@ public class MainController {
             // 处理选中的文件
             for (File file : selectedFiles) {
                 System.out.println("已选中文件: " + file.getAbsolutePath());
-                items.add(file.getName());
+                items.add(file.getAbsolutePath());
             }
         }
         pdfFileList.setItems(items);
     }
 
-
+    /**
+     * 清空文件列表
+     *
+     * @param event
+     */
     @FXML
     void onClearClick(ActionEvent event) {
         pdfFileList.setItems(null);
     }
 
+    /**
+     * 开始合成
+     *
+     * @param event
+     */
     @FXML
     void onMergeClick(ActionEvent event) {
+        progressBar.setVisible(true);
+        startLoading();
         if (pdfFileList.getItems().isEmpty()) {
-            AlertUtil.showAlert("您还没选择文件，请先选择文件！");
+            stopLoading();
+            progressBar.setVisible(false);
+            AlertUtil.showWarningAlert("您还没选择文件，请先选择文件！");
+            return;
         }
+        // 验证PDF尺寸是否都一致
+        ObservableList<String> observableList = pdfFileList.getItems();
+        Set set = new HashSet();
+        for (String str : observableList) {
+            System.out.println(str);
+            Map<String, Float> m = PdfUtil.getPdfWH(str);
+            set.add(m);
+        }
+
+        if (set.size() != 1) {
+            stopLoading();
+            progressBar.setVisible(false);
+            AlertUtil.showWarningAlert("您选择的文件尺寸不一致！！！");
+            return;
+        }
+        String files[] = new String[observableList.size()];
+        observableList.toArray(files);
+        PdfMerger.mergePdf(files, "D:\\iskylei\\pdf\\merged.pdf");
+        AlertUtil.showSuccessAlert("合成成功！");
+        stopLoading();
+        progressBar.setVisible(false);
     }
 
 
@@ -172,5 +240,11 @@ public class MainController {
     @FXML
     void onClearPdfClick(ActionEvent event) {
         pdfList.setItems(null);
+    }
+
+
+    @FXML
+    void onSelectFolderClick(ActionEvent event){
+
     }
 }

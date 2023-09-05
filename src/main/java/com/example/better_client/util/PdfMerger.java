@@ -10,7 +10,6 @@ import java.io.IOException;
 public class PdfMerger {
     public static void mergePdf(String[] files, String result) {
         Document document = new Document();
-
         try {
             PdfCopy copy = new PdfCopy(document, new FileOutputStream(result));
             document.open();
@@ -25,7 +24,6 @@ public class PdfMerger {
 
                 reader.close();
             }
-
             document.close();
         } catch (DocumentException | IOException e) {
             e.printStackTrace();
