@@ -1,9 +1,6 @@
 package com.example.better_client;
 
-import com.example.better_client.util.AlertUtil;
-import com.example.better_client.util.PdfMerger;
-import com.example.better_client.util.PdfUtil;
-import com.example.better_client.util.StringUtils;
+import com.example.better_client.util.*;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.PdfCopy;
 import com.itextpdf.text.pdf.PdfReader;
@@ -21,10 +18,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class MainController {
     @FXML
@@ -206,19 +200,30 @@ public class MainController {
         }
         // 验证PDF尺寸是否都一致
         ObservableList<String> observableList = pdfFileList.getItems();
-        Set set = new HashSet();
-        for (String str : observableList) {
-            System.out.println(str);
-            Map<String, Float> m = PdfUtil.getPdfWH(str);
-            set.add(m);
-        }
-        // 如果尺寸有多个，不能合成
-        if (set.size() != 1) {
+        /**
+         * 验证
+         */
+        String validateStr = MyUtil.volidate(observableList);
+        if (!StringUtils.isEmpty(validateStr)) {
             stopLoading();
             progressBar.setVisible(false);
-            AlertUtil.showWarningAlert("您选择的文件尺寸不一致！！！");
+            AlertUtil.showWarningAlert("选择的PDF文件尺寸不一致!");
+            AlertUtil.showAreaAlert(validateStr);
             return;
         }
+//        Set set = new HashSet();
+//        for (String str : observableList) {
+//            System.out.println(str);
+//            Map<String, Float> m = PdfUtil.getPdfWH(str);
+//            set.add(m);
+//        }
+//        // 如果尺寸有多个，不能合成
+//        if (set.size() != 1) {
+//            stopLoading();
+//            progressBar.setVisible(false);
+//            AlertUtil.showWarningAlert("您选择的文件尺寸不一致！！！");
+//            return;
+//        }
         // list转数组
         String files[] = new String[observableList.size()];
         observableList.toArray(files);
@@ -319,6 +324,7 @@ public class MainController {
 
     /**
      * PDF出入背面图
+     *
      * @param event
      */
     @FXML
@@ -333,6 +339,15 @@ public class MainController {
             return;
         }
         ObservableList<String> observableList = pdfList.getItems();// 原始PDF
+        /**
+         * 验证
+         */
+        String validateStr = MyUtil.volidate(observableList);
+        if (!StringUtils.isEmpty(validateStr)) {
+            AlertUtil.showWarningAlert("选择的PDF文件尺寸不一致!");
+            AlertUtil.showAreaAlert(validateStr);
+            return;
+        }
 
 
         Set set = new HashSet();
@@ -341,16 +356,16 @@ public class MainController {
             Map<String, Float> m = PdfUtil.getPdfWH(str);
             set.add(m);
         }
-        if (set.size()!=1){
-            AlertUtil.showWarningAlert("选择的PDF文件尺寸不一致!");
-            return;
-        }
+//        if (set.size() != 1) {
+//            AlertUtil.showWarningAlert("选择的PDF文件尺寸不一致!");
+//            return;
+//        }
 
-        for (String str: byPdf.getItems()){
+        for (String str : byPdf.getItems()) {
             Map<String, Float> m = PdfUtil.getPdfWH(str);
             set.add(m);
         }
-        if (set.size()!=1){
+        if (set.size() != 1) {
             AlertUtil.showWarningAlert("选择的背面PDF文件尺寸不一致!");
             return;
         }
@@ -368,5 +383,7 @@ public class MainController {
         String resultFileName = "by" + System.currentTimeMillis() + ".pdf";
         String outputFile = filePath + File.separator + resultFileName;
         PdfMerger.insertPdf(files, insertFile, outputFile);
+
+        AlertUtil.showSuccessAlert("操作成功,文件名：" + outputFile);
     }
 }

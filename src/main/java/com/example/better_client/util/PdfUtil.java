@@ -34,4 +34,28 @@ public class PdfUtil {
         }
         return result;
     }
+
+
+    public static String getWhMapData(String pdfPath) {
+        // 读取 PDF 文件
+        PdfReader reader = null;
+        String result = null;
+        try {
+            // 读取 PDF 文件
+            reader = new PdfReader(pdfPath);
+            // 获取第一页的文档对象
+            Document document = new Document(reader.getPageSize(1));
+            // 获取页面的长宽
+            Rectangle pageSize = document.getPageSize();
+            float width = pageSize.getWidth();
+            float height = pageSize.getHeight();
+            result = width + "|" + height;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // 关闭读取器
+            reader.close();
+        }
+        return result;
+    }
 }
