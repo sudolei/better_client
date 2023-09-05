@@ -9,8 +9,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.TextFlow;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -74,6 +77,12 @@ public class MainController {
     @FXML
     private Label selectByFolder;
 
+    @FXML
+    private Label defFolder;
+
+    @FXML
+    private MenuItem def_directory;
+
     public void startLoading() {
         progressBar.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
     }
@@ -126,6 +135,48 @@ public class MainController {
         alert.showAndWait();
     }
 
+
+    @FXML
+    void onDefClick(ActionEvent event) {
+        Stage stage = new Stage();
+        // 创建新的Stage对象
+        // 设置窗口标题
+        stage.setTitle("新窗口");
+        stage.setWidth(300);
+        stage.setHeight(200);
+
+        // 创建文本标签
+        TextField field = new TextField(defFolder.getText());
+
+        // 创建按钮
+        Button button = new Button("保存");
+
+        // 创建垂直布局容器
+        VBox vbox = new VBox();
+        vbox.setSpacing(10);
+        vbox.setPadding(new Insets(10));
+        vbox.getChildren().addAll(field, button);
+
+        // 创建场景并将容器添加到场景中
+        Scene scene = new Scene(vbox, 300, 200);
+
+        // 将场景设置到舞台
+        stage.setScene(scene);
+        // 显示窗口
+        stage.show();
+
+        button.setOnAction(e -> {
+            String path = field.getText();
+            File file = new File(path);
+            if (!file.exists()) {
+                AlertUtil.showWarningAlert("保存失败,路径不存在！");
+                return;
+            }
+            defFolder.setText(field.getText());
+            AlertUtil.showSuccessAlert("保存成功!");
+        });
+    }
+
     /**
      * 文件选择
      *
@@ -135,7 +186,9 @@ public class MainController {
     void onSelectFileClick(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("选择文件");
-        fileChooser.setInitialDirectory(new File("D:\\iskylei\\pdf"));
+        if (!StringUtils.isEmpty(defFolder.getText())) {
+            fileChooser.setInitialDirectory(new File(defFolder.getText()));
+        }
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("PDF文件", "*.pdf")
         );
@@ -254,7 +307,9 @@ public class MainController {
     void onPdfSelect(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("选择pdf文件");
-        fileChooser.setInitialDirectory(new File("D:\\iskylei\\pdf"));
+        if (!StringUtils.isEmpty(defFolder.getText())) {
+            fileChooser.setInitialDirectory(new File(defFolder.getText()));
+        }
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("PDF文件", "*.pdf")
         );
@@ -283,7 +338,10 @@ public class MainController {
     void onselectByClick(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("选择背面PDF文件");
-        fileChooser.setInitialDirectory(new File("D:\\iskylei\\pdf"));
+//        fileChooser.setInitialDirectory(new File("D:\\iskylei\\pdf"));
+        if (!StringUtils.isEmpty(defFolder.getText())) {
+            fileChooser.setInitialDirectory(new File(defFolder.getText()));
+        }
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("PDF文件", "*.pdf")
         );
