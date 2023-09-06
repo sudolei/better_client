@@ -1,21 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="696.0"
-      prefWidth="947.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      prefWidth="947.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.example.better_client.MainController">
     <children>
         <MenuBar>
@@ -40,39 +29,37 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="519.0" prefWidth="784.0">
                             <children>
-                                <Label layoutX="241.0" layoutY="98.0" prefHeight="31.0" prefWidth="82.0"
-                                       style="-fx-background-color: #008B8B;" text="    选择文件：" textAlignment="CENTER"
-                                       textFill="#f8f5f5"/>
 
 
-                                <Label fx:id="defFolder" layoutX="0.0" layoutY="0.0" prefHeight="31.0" prefWidth="82.0" visible="false"
+                                <Label fx:id="defFolder" layoutX="0.0" layoutY="0.0" prefHeight="31.0" prefWidth="82.0"
                                        style="-fx-background-color: #008B8B;" text="" textAlignment="CENTER"
-                                       textFill="#f8f5f5"/>
-                                <Button fx:id="selectFile" layoutX="336.0" layoutY="97.0" mnemonicParsing="false"
-                                        onAction="#onSelectFileClick" prefHeight="33.0" prefWidth="371.0"
-                                        style="-fx-background-color: green;" text="选择要合成的PDF文件（多选）" textFill="#fffbfb"/>
-                                <ListView fx:id="pdfFileList" layoutX="241.0" layoutY="181.0" prefHeight="224.0"
-                                          prefWidth="466.0" style="-fx-background-color: #E5E4E2;"/>
+                                       textFill="#f8f5f5" visible="false"/>
+                                <Button fx:id="selectFile" layoutX="206.0" layoutY="87.0" mnemonicParsing="false"
+                                        onAction="#onSelectFileClick" prefHeight="33.0" prefWidth="183.0"
+                                        style="-fx-background-color: green; -fx-background-radius: 20;"
+                                        text="选择要合成的PDF文件（多选）" textFill="#fffbfb"/>
+                                <ListView fx:id="pdfFileList" layoutX="206.0" layoutY="135.0" prefHeight="271.0"
+                                          prefWidth="553.0" style="-fx-background-color: #E5E4E2;"/>
                                 <Button fx:id="clearBtn" layoutX="352.0" layoutY="443.0" mnemonicParsing="false"
                                         onAction="#onClearClick" prefHeight="43.0" prefWidth="89.0"
-                                        style="-fx-background-color: red;" text="清空" textFill="#f8f4f4"/>
+                                        style="-fx-background-color: red; -fx-background-radius: 20;" text="清空"
+                                        textFill="#f8f4f4"/>
                                 <Button fx:id="mergeBtn" layoutX="510.0" layoutY="444.0" mnemonicParsing="false"
                                         onAction="#onMergeClick" prefHeight="41.0" prefWidth="89.0"
-                                        style="-fx-background-color: green;" text="合成" textFill="#fffbfb"/>
-                                <StackPane layoutX="240.0" layoutY="183.0" prefHeight="223.0" prefWidth="467.0">
+                                        style="-fx-background-color: green; -fx-background-radius: 20;" text="合成"
+                                        textFill="#fffbfb"/>
+                                <StackPane layoutX="203.0" layoutY="134.0" prefHeight="271.0" prefWidth="556.0">
                                     <children>
-                                        <ProgressBar fx:id="progressBar" prefHeight="54.0" prefWidth="461.0"
+                                        <ProgressBar fx:id="progressBar" prefHeight="54.0" prefWidth="555.0"
                                                      progress="0.0" visible="false"/>
                                     </children>
                                 </StackPane>
-                                <Label layoutX="241.0" layoutY="144.0" prefHeight="31.0" prefWidth="82.0"
-                                       style="-fx-background-color: #008B8B;" text="    选择目录：" textAlignment="CENTER"
-                                       textFill="#f8f5f5"/>
-                                <Button fx:id="selectFolderBtn" layoutX="336.0" layoutY="143.0" mnemonicParsing="false"
+                                <Button fx:id="selectFolderBtn" layoutX="390.0" layoutY="88.0" mnemonicParsing="false"
                                         onAction="#onSelectFolderClick" prefHeight="33.0" prefWidth="104.0"
-                                        style="-fx-background-color: green;" text="选择生成目录" textFill="#fffbfb"/>
-                                <Label fx:id="selectFolder" layoutX="458.0" layoutY="144.0" prefHeight="31.0"
-                                       prefWidth="249.0" style="-fx-background-color: #008B8B;" textAlignment="CENTER"
+                                        style="-fx-background-color: green; -fx-background-radius: 20;" text="选择生成目录"
+                                        textFill="#fffbfb"/>
+                                <Label fx:id="selectFolder" layoutX="495.0" layoutY="90.0" prefHeight="31.0"
+                                       prefWidth="263.0" style="-fx-background-color: #008B8B;" textAlignment="CENTER"
                                        textFill="#f8f5f5"/>
                             </children>
                         </AnchorPane>
@@ -82,39 +69,37 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="543.0" prefWidth="947.0">
                             <children>
-                                <Button fx:id="pdfSelect" layoutX="248.0" layoutY="65.0" mnemonicParsing="false"
+                                <Button fx:id="pdfSelect" layoutX="202.0" layoutY="65.0" mnemonicParsing="false"
                                         onAction="#onPdfSelect" prefHeight="25.0" prefWidth="88.0"
-                                        style="-fx-background-color: green;" text="选择PDF文件" textFill="#f8f1f1"/>
-                                <Button fx:id="selectBYBtn" layoutX="662.0" layoutY="65.0" mnemonicParsing="false"
+                                        style="-fx-background-color: green; -fx-background-radius: 20;" text="选择PDF文件"
+                                        textFill="#f8f1f1"/>
+                                <Button fx:id="selectBYBtn" layoutX="500.0" layoutY="65.0" mnemonicParsing="false"
                                         onAction="#onselectByClick" prefHeight="25.0" prefWidth="107.0"
-                                        style="-fx-background-color: green;" text="选择背图PDF" textFill="#fffafa"/>
-                                <ListView fx:id="pdfList" layoutX="112.0" layoutY="112.0" prefHeight="224.0"
+                                        style="-fx-background-color: green; -fx-background-radius: 20;" text="选择背图PDF"
+                                        textFill="#fffafa"/>
+                                <ListView fx:id="pdfList" layoutX="202.0" layoutY="113.0" prefHeight="224.0"
                                           prefWidth="295.0" style="-fx-background-color: #E5E4E2;"/>
-                                <Label layoutX="111.0" layoutY="65.0" prefHeight="25.0" prefWidth="129.0"
-                                       style="-fx-background-color: #008B8B;" text="     选择的PDF文件：" textFill="#f8f6f6"/>
-                                <Label layoutX="524.0" layoutY="65.0" prefHeight="25.0" prefWidth="129.0"
-                                       style="-fx-background-color: #008B8B;" text="      选择的背图PDF："
-                                       textFill="#f8f8f8"/>
-                                <ListView fx:id="byPdf" layoutX="524.0" layoutY="113.0" prefHeight="223.0"
-                                          prefWidth="325.0" style="-fx-background-color: #E5E4E2;"/>
-                                <Button fx:id="byMergeBtn" layoutX="241.0" layoutY="427.0" mnemonicParsing="false"
+                                <ListView fx:id="byPdf" layoutX="500.0" layoutY="113.0" prefHeight="223.0"
+                                          prefWidth="293.0" style="-fx-background-color: #E5E4E2;"/>
+                                <Button fx:id="byMergeBtn" layoutX="246.0" layoutY="424.0" mnemonicParsing="false"
                                         onAction="#byMergeClick" prefHeight="36.0" prefWidth="465.0"
-                                        style="-fx-background-color: green;" text="合成" textFill="#fffbfb"/>
-                                <Button fx:id="clearPdfBtn" layoutX="343.0" layoutY="66.0" mnemonicParsing="false"
-                                        onAction="#onClearPdfClick" style="-fx-background-color: red;" text="清空"
-                                        textFill="#fcf6f6"/>
-                                <Button fx:id="clearByBtn" layoutX="780.0" layoutY="66.0" mnemonicParsing="false"
-                                        onAction="#onClearByClick" style="-fx-background-color: red;" text="清空"
-                                        textFill="#f5f2f2"/>
-                                <Label layoutX="242.0" layoutY="371.0" prefHeight="31.0" prefWidth="82.0"
-                                       style="-fx-background-color: #008B8B;" text="    选择目录：" textAlignment="CENTER"
-                                       textFill="#f8f5f5"/>
-                                <Button fx:id="selectByFolderBtn" layoutX="343.0" layoutY="370.0"
-                                        mnemonicParsing="false" onAction="#onSelectByFolderClick" prefHeight="33.0"
-                                        prefWidth="104.0" style="-fx-background-color: green;" text="选择生成目录"
+                                        style="-fx-background-color: green; -fx-background-radius: 20;" text="合成"
                                         textFill="#fffbfb"/>
-                                <Label fx:id="selectByFolder" layoutX="458.0" layoutY="371.0" prefHeight="31.0"
-                                       prefWidth="249.0" style="-fx-background-color: #008B8B;" textAlignment="CENTER"
+                                <Button fx:id="clearPdfBtn" layoutX="297.0" layoutY="66.0" mnemonicParsing="false"
+                                        onAction="#onClearPdfClick"
+                                        style="-fx-background-color: red; -fx-background-radius: 20;" text="清空"
+                                        textFill="#fcf6f6"/>
+                                <Button fx:id="clearByBtn" layoutX="614.0" layoutY="66.0" mnemonicParsing="false"
+                                        onAction="#onClearByClick"
+                                        style="-fx-background-color: red; -fx-background-radius: 20;" text="清空"
+                                        textFill="#f5f2f2"/>
+                                <Button fx:id="selectByFolderBtn" layoutX="245.0" layoutY="370.0"
+                                        mnemonicParsing="false" onAction="#onSelectByFolderClick" prefHeight="33.0"
+                                        prefWidth="104.0"
+                                        style="-fx-background-color: green; -fx-background-radius: 20;" text="选择生成目录"
+                                        textFill="#fffbfb"/>
+                                <Label fx:id="selectByFolder" layoutX="359.0" layoutY="371.0" prefHeight="31.0"
+                                       prefWidth="348.0" style="-fx-background-color: #008B8B;" textAlignment="CENTER"
                                        textFill="#f8f5f5"/>
                             </children>
                         </AnchorPane>
