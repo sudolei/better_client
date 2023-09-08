@@ -280,6 +280,8 @@ public class MainController {
         // list转数组
         String files[] = new String[observableList.size()];
         observableList.toArray(files);
+        // 根据份数重置数组
+        String newFiles[] = MyUtil.resetArr(files);
         // 文件路径
         String filePath = selectFolder.getText();
         if (StringUtils.isEmpty(filePath)) {
@@ -292,7 +294,7 @@ public class MainController {
         String resultPdfName = System.currentTimeMillis() + ".pdf";
         String resultPdf = filePath + File.separator + resultPdfName;
         // 合并
-        PdfMerger.mergePdf(files, resultPdf);
+        PdfMerger.mergePdf(newFiles, resultPdf);
         AlertUtil.showSuccessAlert("合成成功！合成文件：" + resultPdf);
         stopLoading();
         progressBar.setVisible(false);
@@ -431,7 +433,11 @@ public class MainController {
         String files[] = new String[observableList.size()];
         observableList.toArray(files);
 
-        String insertFile = byPdf.getItems().get(0); // 插入的PDF文件路径
+        // 根据份数重置数组
+        String newFiles[] = MyUtil.resetArr(files);
+
+        // 插入的PDF文件路径
+        String insertFile = byPdf.getItems().get(0);
 
         String filePath = selectByFolder.getText();
         if (StringUtils.isEmpty(filePath)) {
@@ -440,7 +446,7 @@ public class MainController {
         }
         String resultFileName = "by" + System.currentTimeMillis() + ".pdf";
         String outputFile = filePath + File.separator + resultFileName;
-        PdfMerger.insertPdf(files, insertFile, outputFile);
+        PdfMerger.insertPdf(newFiles, insertFile, outputFile);
 
         AlertUtil.showSuccessAlert("操作成功,文件名：" + outputFile);
     }
