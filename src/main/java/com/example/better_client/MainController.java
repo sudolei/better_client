@@ -83,6 +83,25 @@ public class MainController {
     @FXML
     private MenuItem def_directory;
 
+    @FXML
+    private Button pdfFolderBtn;
+
+    @FXML
+    private Button selCreateFolder;
+
+    @FXML
+    private Label selPdfFolderLabel;
+
+    @FXML
+    private Label createFolderLabel;
+
+
+    @FXML
+    private ListView<String> zmPdfList;
+
+    @FXML
+    private ListView<String> bmPdfList;
+
     public void startLoading() {
         progressBar.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
     }
@@ -98,7 +117,6 @@ public class MainController {
      */
     @FXML
     void onCloseClick(ActionEvent event) {
-        System.out.println(" this is close ");
         Platform.exit();
     }
 
@@ -201,7 +219,6 @@ public class MainController {
         if (selectedFiles != null) {
             // 处理选中的文件
             for (File file : selectedFiles) {
-                System.out.println("已选中文件: " + file.getAbsolutePath());
                 items.add(file.getAbsolutePath());
             }
         }
@@ -220,7 +237,6 @@ public class MainController {
         Stage stage = (Stage) selectFolderBtn.getScene().getWindow();
         File selectedDirectory = directoryChooser.showDialog(stage);
         if (selectedDirectory != null) {
-            System.out.println(selectedDirectory.getAbsolutePath());
             // 可以在这里处理选择的文件夹
             selectFolder.setText(selectedDirectory.getAbsolutePath());
         }
@@ -266,7 +282,6 @@ public class MainController {
         }
 //        Set set = new HashSet();
 //        for (String str : observableList) {
-//            System.out.println(str);
 //            Map<String, Float> m = PdfUtil.getPdfWH(str);
 //            set.add(m);
 //        }
@@ -324,7 +339,6 @@ public class MainController {
         if (selectedFiles != null) {
             // 处理选中的文件
             for (File file : selectedFiles) {
-                System.out.println("已选中文件: " + file.getAbsolutePath());
                 items.add(file.getAbsolutePath());
             }
         }
@@ -352,7 +366,6 @@ public class MainController {
         ObservableList<String> items = FXCollections.observableArrayList();
         if (selectedFile != null) {
             // 处理选择的文件
-            System.out.println("选择的文件路径: " + selectedFile.getAbsolutePath());
             items.add(selectedFile.getAbsolutePath());
         }
         byPdf.setItems(items);
@@ -376,7 +389,6 @@ public class MainController {
         Stage stage = (Stage) selectByFolderBtn.getScene().getWindow();
         File selectedDirectory = directoryChooser.showDialog(stage);
         if (selectedDirectory != null) {
-            System.out.println(selectedDirectory.getAbsolutePath());
             // 可以在这里处理选择的文件夹
             selectByFolder.setText(selectedDirectory.getAbsolutePath());
         }
@@ -412,7 +424,6 @@ public class MainController {
 
         Set set = new HashSet();
         for (String str : observableList) {
-            System.out.println(str);
             Map<String, Float> m = PdfUtil.getPdfWH(str);
             set.add(m);
         }
@@ -449,5 +460,115 @@ public class MainController {
         PdfMerger.insertPdf(newFiles, insertFile, outputFile);
 
         AlertUtil.showSuccessAlert("操作成功,文件名：" + outputFile);
+    }
+
+    Map<String, String> m;
+
+    @FXML
+    void pdfFolderBtnClick(ActionEvent event) {
+        m = null;
+        m = new HashMap<>();
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("选择文件夹");
+        Stage stage = (Stage) pdfFolderBtn.getScene().getWindow();
+        File selectedDirectory = directoryChooser.showDialog(stage);
+        if (selectedDirectory != null) {
+            // 可以在这里处理选择的文件夹
+            String folderPath = selectedDirectory.getAbsolutePath();
+            selPdfFolderLabel.setText(folderPath);
+            // 选择正面背面PDF
+
+            List<String> list = FileUtil.readPDFFiles(folderPath);
+
+            // 背面PDF
+            List<String> bmList = FileUtil.readBmPDFFiles(folderPath);
+            ObservableList<String> observableBmList = FXCollections.observableArrayList(bmList);
+            bmPdfList.setItems(observableBmList);
+            //
+            List<String> zmList = new ArrayList<>();
+            for (String str : bmList) {
+                String[] fileArr = str.split("--");
+                String firstStr = null;
+                String endStr = null;
+                if (fileArr.length > 1) {
+                    firstStr = fileArr[0];
+                    endStr = fileArr[fileArr.length - 2];
+                }
+                for (String zmStr : list) {
+                    if (zmStr.indexOf(firstStr) != -1 && zmStr.indexOf(endStr) != -1) {
+                        zmList.add(zmStr);
+                        m.put(zmStr, str);
+                    }
+                }
+            }
+            ObservableList<String> observableList = FXCollections.observableArrayList(zmList);
+            zmPdfList.setItems(observableList);
+        }
+    }
+
+    @FXML
+    void selCreateFolderBtnClick(ActionEvent event) {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("选择文件夹");
+        Stage stage = (Stage) selCreateFolder.getScene().getWindow();
+        File selectedDirectory = directoryChooser.showDialog(stage);
+        if (selectedDirectory != null) {
+            // 可以在这里处理选择的文件夹
+            createFolderLabel.setText(selectedDirectory.getAbsolutePath());
+        }
+    }
+
+    @FXML
+    void byHcBtnClick(ActionEvent event) {
+        String createFolderText = createFolderLabel.getText();
+        if (StringUtils.isEmpty(createFolderText)) {
+            AlertUtil.showWarningAlert("请选择生成PDF的目录");
+            return;
+        }
+
+        String selText = selPdfFolderLabel.getText();
+        if (StringUtils.isEmpty(selText)) {
+            AlertUtil.showWarningAlert("请选择PDF文件夹目录");
+            return;
+        }
+
+        if (zmPdfList.getItems().size() == 0) {
+            AlertUtil.showWarningAlert("文件夹没有PDF文件");
+            return;
+        }
+
+        if (zmPdfList.getItems().size() != bmPdfList.getItems().size()) {
+            AlertUtil.showWarningAlert("正面PDF文件数量和背面数量不一致");
+            return;
+        }
+
+        for (Map.Entry<String, String> entry : m.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            System.out.println("Key: " + key + ", Value: " + value);
+
+            int count = MyUtil.getPdfCount(key);
+            List<String> l = new ArrayList<>();
+            for (int i = 0; i < count; i++) {
+                l.add(selText + File.separator + key);
+            }
+
+            String files[] = new String[l.size()];
+            l.toArray(files);
+
+            // 根据份数重置数组
+            String newFiles[] = MyUtil.resetArr(files);
+
+            // 插入的PDF文件路径
+            String insertFile = selText + File.separator + value;
+
+//            String resultFileName = "byNew" + System.currentTimeMillis() + ".pdf";
+            String resultFileName = key;
+            String outputFile = createFolderText + File.separator + resultFileName;
+            PdfMerger.insertPdf(newFiles, insertFile, outputFile);
+
+            AlertUtil.showSuccessAlert("操作成功,文件名：" + outputFile);
+        }
+
     }
 }

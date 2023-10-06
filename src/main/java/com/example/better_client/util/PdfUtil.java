@@ -8,6 +8,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PdfUtil {
+
+    /**
+     * 获取PDF宽高
+     * @param pdfPath
+     * @return
+     */
     public static Map<String, Float> getPdfWH(String pdfPath) {
         // 读取 PDF 文件
         PdfReader reader = null;
@@ -35,7 +41,11 @@ public class PdfUtil {
         return result;
     }
 
-
+    /**
+     * 获取宽高
+     * @param pdfPath
+     * @return
+     */
     public static String getWhMapData(String pdfPath) {
         // 读取 PDF 文件
         PdfReader reader = null;
