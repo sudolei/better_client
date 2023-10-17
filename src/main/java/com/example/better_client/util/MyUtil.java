@@ -30,7 +30,6 @@ public class MyUtil {
         String count = null;
         if (matcher.find()) {
             count = matcher.group();
-            System.out.println(count);
         }
         int result = 1;
         if (count != null) {
@@ -44,7 +43,8 @@ public class MyUtil {
         Matcher matcher = pattern.matcher(input);
         int result = 0;
         while (matcher.find()) {
-            System.out.println(matcher.group()); // 打印匹配到的数字
+            // 打印匹配到的数字
+//            System.out.println(matcher.group());
             result = Integer.parseInt(matcher.group());
         }
         return result;

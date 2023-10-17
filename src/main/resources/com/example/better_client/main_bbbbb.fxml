@@ -149,30 +149,30 @@
                         </AnchorPane>
                     </content>
                 </Tab>
-<!--                <Tab text="生成EXCEL">-->
-                <!--                    <content>-->
-                <!--                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">-->
-                <!--                            <children>-->
-                <!--                                <Button fx:id="pdfFolderXlsBtn" layoutX="210.0" layoutY="115.0" mnemonicParsing="false"-->
-                <!--                                        onAction="#pdfFolderXlsBtnClick" prefHeight="33.0" prefWidth="99.0"-->
-                <!--                                        style="-fx-background-color: green; -fx-background-radius: 20;"-->
-                <!--                                        text="PDF目录选择" textFill="#fffdfd"/>-->
-                <!--                                <Label fx:id="selPdfFolderXlsLabel" layoutX="326.0" layoutY="115.0" prefHeight="33.0"-->
-                <!--                                       prefWidth="318.0" style="-fx-background-color: #008B8B;"/>-->
-                <!--                                <Button fx:id="selCreateXlsFolder" layoutX="211.0" layoutY="182.0"-->
-                <!--                                        mnemonicParsing="false" onAction="#selCreateXlsFolderClick" prefHeight="33.0"-->
-                <!--                                        prefWidth="98.0" style="-fx-background-color: green; -fx-background-radius: 20;"-->
-                <!--                                        text="生成目录选择" textFill="#f8f8f8"/>-->
-                <!--                                <Label fx:id="createFolderXlsLabel" layoutX="326.0" layoutY="182.0" prefHeight="33.0"-->
-                <!--                                       prefWidth="318.0" style="-fx-background-color: #008B8B;"/>-->
-                <!--                                <Button fx:id="byXlsBtn" layoutX="211.0" layoutY="274.0" mnemonicParsing="false"-->
-                <!--                                        onAction="#byHcBtnClick" prefHeight="36.0" prefWidth="465.0"-->
-                <!--                                        style="-fx-background-color: green; -fx-background-radius: 20;" text="生成EXCEL"-->
-                <!--                                        textFill="#fffbfb"/>-->
-                <!--                            </children>-->
-                <!--                        </AnchorPane>-->
-                <!--                    </content>-->
-                <!--                </Tab>-->
+                <Tab text="生成EXCEL">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <Button fx:id="pdfFolderXlsBtn" layoutX="210.0" layoutY="115.0" mnemonicParsing="false"
+                                        onAction="#pdfFolderXlsBtnClick" prefHeight="33.0" prefWidth="99.0"
+                                        style="-fx-background-color: green; -fx-background-radius: 20;"
+                                        text="PDF目录选择" textFill="#fffdfd"/>
+                                <Label fx:id="selPdfFolderXlsLabel" layoutX="326.0" layoutY="115.0" prefHeight="33.0"
+                                       prefWidth="318.0" style="-fx-background-color: #008B8B;"/>
+                                <Button fx:id="selCreateXlsFolder" layoutX="211.0" layoutY="182.0"
+                                        mnemonicParsing="false" onAction="#selCreateXlsFolderClick" prefHeight="33.0"
+                                        prefWidth="98.0" style="-fx-background-color: green; -fx-background-radius: 20;"
+                                        text="生成目录选择" textFill="#f8f8f8"/>
+                                <Label fx:id="createFolderXlsLabel" layoutX="326.0" layoutY="182.0" prefHeight="33.0"
+                                       prefWidth="318.0" style="-fx-background-color: #008B8B;"/>
+                                <Button fx:id="byXlsBtn" layoutX="211.0" layoutY="274.0" mnemonicParsing="false"
+                                        onAction="#byHcBtnClick" prefHeight="36.0" prefWidth="465.0"
+                                        style="-fx-background-color: green; -fx-background-radius: 20;" text="生成EXCEL"
+                                        textFill="#fffbfb"/>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
             </tabs>
         </TabPane>
     </children>

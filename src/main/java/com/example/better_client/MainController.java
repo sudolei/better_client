@@ -102,6 +102,7 @@ public class MainController {
     @FXML
     private ListView<String> bmPdfList;
 
+
     public void startLoading() {
         progressBar.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
     }
@@ -546,7 +547,7 @@ public class MainController {
             String key = entry.getKey();
             String value = entry.getValue();
             System.out.println("Key: " + key + ", Value: " + value);
-
+            System.out.println("selText:" + selText);
             int count = MyUtil.getPdfCount(key);
             List<String> l = new ArrayList<>();
             for (int i = 0; i < count; i++) {
@@ -566,9 +567,55 @@ public class MainController {
             String resultFileName = key;
             String outputFile = createFolderText + File.separator + resultFileName;
             PdfMerger.insertPdf(newFiles, insertFile, outputFile);
-
-            AlertUtil.showSuccessAlert("操作成功,文件名：" + outputFile);
+//            AlertUtil.showSuccessAlert("操作成功,文件名：" + outputFile);
         }
+    }
+
+
+    @FXML
+    private Button pdfFolderXlsBtn;
+
+    @FXML
+    private Label selPdfFolderXlsLabel;
+
+    @FXML
+    private Button selCreateXlsFolder;
+
+
+    @FXML
+    private Label createFolderXlsLabel;
+
+    @FXML
+    private Button byXlsBtn;
+
+    @FXML
+    void pdfFolderXlsBtnClick(ActionEvent event) {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("选择文件夹");
+        Stage stage = (Stage) pdfFolderXlsBtn.getScene().getWindow();
+        File selectedDirectory = directoryChooser.showDialog(stage);
+        if (selectedDirectory != null) {
+            // 可以在这里处理选择的文件夹
+            selPdfFolderXlsLabel.setText(selectedDirectory.getAbsolutePath());
+        }
+    }
+
+    @FXML
+    void selCreateXlsFolderClick(ActionEvent event) {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("选择文件夹");
+        Stage stage = (Stage) selCreateXlsFolder.getScene().getWindow();
+        File selectedDirectory = directoryChooser.showDialog(stage);
+        if (selectedDirectory != null) {
+            // 可以在这里处理选择的文件夹
+            createFolderXlsLabel.setText(selectedDirectory.getAbsolutePath());
+        }
+    }
+
+
+    @FXML
+    void byXlsBtnClick(ActionEvent event) {
 
     }
+
 }
