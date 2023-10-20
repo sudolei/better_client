@@ -585,6 +585,7 @@ public class MainController {
             return;
         }
 
+        ObservableList<String> items = FXCollections.observableArrayList();
         for (Map.Entry<String, String> entry : m.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
@@ -610,7 +611,26 @@ public class MainController {
             String outputFile = createFolderText + File.separator + resultFileName;
             PdfMerger.insertPdf(newFiles, insertFile, outputFile);
 //            AlertUtil.showSuccessAlert("操作成功,文件名：" + outputFile);
+
+
+            items.add(selText + File.separator + key);
+            items.add(selText + File.separator + value);
         }
+
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(3000);
+                    PdfMerger.reToOther(items);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }).start();
     }
 
 
