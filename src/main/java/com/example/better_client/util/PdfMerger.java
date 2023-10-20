@@ -4,7 +4,10 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfCopy;
 import com.itextpdf.text.pdf.PdfReader;
+import javafx.collections.ObservableList;
+import org.apache.commons.io.FileUtils;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -69,6 +72,52 @@ public class PdfMerger {
             document.close();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * 移动到其他文件夹
+     *
+     * @param observableList
+     */
+    public static void reToOtherFolder(ObservableList<String> observableList) {
+        for (String str : observableList) {
+            File f = new File(str);
+            String folder = f.getParent();
+            String reToFolder = folder + File.separator + "123111" + File.separator;
+            File folderFile = new File(reToFolder);
+            if (!folderFile.exists()) {
+                folderFile.mkdir();
+            }
+            f.deleteOnExit();
+            System.out.println(f.getName());
+            if (f.renameTo(new File(reToFolder, f.getName()))) {
+                System.out.println("移动成功!");
+            } else {
+                System.out.println("移动失败!");
+            }
+        }
+    }
+
+
+    public static void reToOther(ObservableList<String> observableList) throws IOException {
+        for (String str : observableList) {
+            File f = new File(str);
+            String folder = f.getParent();
+            String reToFolder = folder + File.separator + "123111" + File.separator;
+            FileUtils.copyFileToDirectory(f, new File(reToFolder));
+            if (f.exists() && f.isFile()) {
+                System.gc();
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                System.out.println(f.getName());
+                System.out.println(f.getAbsolutePath());
+                boolean b = f.delete();
+                System.out.println(b);
+            }
         }
     }
 }

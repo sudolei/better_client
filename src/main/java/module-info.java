@@ -11,7 +11,7 @@ module com.example.better_client {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
     requires itextpdf;
-
+    requires commons.io;
     opens com.example.better_client to javafx.fxml;
     exports com.example.better_client;
 }

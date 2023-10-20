@@ -1,5 +1,7 @@
 package com.example.better_client.test;
 
+import java.io.File;
+
 /**
  * 功能描述
  *
@@ -9,5 +11,7 @@ package com.example.better_client.test;
 public class SvgMain {
 
     public static void main(String[] args) {
+        File file = new File("D:\\iskylei\\pdf\\SMXPBMLB--GC--D--1fen--tb490601534--2.pdf");
+        file.delete();
     }
 }

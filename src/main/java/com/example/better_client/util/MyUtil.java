@@ -2,6 +2,7 @@ package com.example.better_client.util;
 
 import javafx.collections.ObservableList;
 
+import java.io.File;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -87,5 +88,23 @@ public class MyUtil {
             }
         }
         return w;
+    }
+
+
+    public static String getResultFileName(ObservableList<String> observableList) {
+        String result = "";
+        Set<String> s = new HashSet<>();
+        for (String str : observableList) {
+            String fileName = str.substring(str.lastIndexOf(File.separator) + 1);
+            String[] pathArray = fileName.split("--");
+            String name = pathArray[0] + "--" + pathArray[1];
+            s.add(name);
+        }
+
+        for (String str : s) {
+            result += str;
+        }
+        result += ".pdf";
+        return result;
     }
 }

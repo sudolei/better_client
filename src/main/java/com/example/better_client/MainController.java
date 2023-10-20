@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.*;
 
 public class MainController {
@@ -154,7 +155,11 @@ public class MainController {
         alert.showAndWait();
     }
 
-
+    /**
+     * 默认路径
+     *
+     * @param event
+     */
     @FXML
     void onDefClick(ActionEvent event) {
         Stage stage = new Stage();
@@ -306,14 +311,32 @@ public class MainController {
             AlertUtil.showWarningAlert("请先选择文件目录！");
             return;
         }
+        String resultFileName = MyUtil.getResultFileName(observableList);
         // 文件名
-        String resultPdfName = System.currentTimeMillis() + ".pdf";
-        String resultPdf = filePath + File.separator + resultPdfName;
+        String resultPdf = filePath + File.separator + resultFileName;
         // 合并
         PdfMerger.mergePdf(newFiles, resultPdf);
+        // 移动文件到其他文件夹
+//        PdfMerger.reToOtherFolder(observableList);
+
         AlertUtil.showSuccessAlert("合成成功！合成文件：" + resultPdf);
         stopLoading();
         progressBar.setVisible(false);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    Thread.sleep(3000);
+                    PdfMerger.reToOther(observableList);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }).start();
     }
 
     /**
@@ -396,7 +419,7 @@ public class MainController {
     }
 
     /**
-     * PDF出入背面图
+     * PDF插入背面图
      *
      * @param event
      */
@@ -456,7 +479,9 @@ public class MainController {
             AlertUtil.showWarningAlert("请先选择文件目录！");
             return;
         }
-        String resultFileName = "by" + System.currentTimeMillis() + ".pdf";
+//        String resultFileName = "by" + System.currentTimeMillis() + ".pdf";
+
+        String resultFileName = MyUtil.getResultFileName(observableList);
         String outputFile = filePath + File.separator + resultFileName;
         PdfMerger.insertPdf(newFiles, insertFile, outputFile);
 
@@ -465,6 +490,12 @@ public class MainController {
 
     Map<String, String> m;
 
+    /**
+     * 自动背图
+     *
+     * @param event
+     * @deprecated 目录选择
+     */
     @FXML
     void pdfFolderBtnClick(ActionEvent event) {
         m = null;
@@ -507,6 +538,12 @@ public class MainController {
         }
     }
 
+    /**
+     * 背图生成
+     *
+     * @param event
+     * @deprecated 生成目录选择
+     */
     @FXML
     void selCreateFolderBtnClick(ActionEvent event) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -519,6 +556,11 @@ public class MainController {
         }
     }
 
+    /**
+     * 自动背图合成
+     *
+     * @param event
+     */
     @FXML
     void byHcBtnClick(ActionEvent event) {
         String createFolderText = createFolderLabel.getText();
