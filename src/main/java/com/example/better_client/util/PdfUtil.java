@@ -11,6 +11,7 @@ public class PdfUtil {
 
     /**
      * 获取PDF宽高
+     *
      * @param pdfPath
      * @return
      */
@@ -43,6 +44,7 @@ public class PdfUtil {
 
     /**
      * 获取宽高
+     *
      * @param pdfPath
      * @return
      */
@@ -57,8 +59,8 @@ public class PdfUtil {
             Document document = new Document(reader.getPageSize(1));
             // 获取页面的长宽
             Rectangle pageSize = document.getPageSize();
-            float width = pageSize.getWidth();
-            float height = pageSize.getHeight();
+            int width = (int) pageSize.getWidth();
+            int height = (int) pageSize.getHeight();
             result = width + "|" + height;
         } catch (Exception e) {
             e.printStackTrace();
