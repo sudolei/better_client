@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.TextFlow;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -165,7 +166,7 @@ public class MainController {
         Stage stage = new Stage();
         // 创建新的Stage对象
         // 设置窗口标题
-        stage.setTitle("新窗口");
+        stage.setTitle("设置默认路径");
         stage.setWidth(300);
         stage.setHeight(200);
 
@@ -174,7 +175,8 @@ public class MainController {
 
         // 创建按钮
         Button button = new Button("保存");
-
+        button.setTextFill(Paint.valueOf("#fcf8f8"));
+        button.setStyle("-fx-background-color: green;");
         // 创建垂直布局容器
         VBox vbox = new VBox();
         vbox.setSpacing(10);
