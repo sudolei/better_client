@@ -23,6 +23,18 @@ public class MyUtil {
         return result;
     }
 
+
+    public static String[] resetByHcArr(String[] args) {
+        List<String> list = new ArrayList<>();
+        for (String str : args) {
+            list.add(str);
+        }
+        String[] result = new String[list.size()];
+        list.toArray(result);
+        return result;
+    }
+
+
     public static int getPdfCount(String fileName) {
         fileName = fileName.toUpperCase(Locale.ROOT);
         String regex = "\\d+FEN";

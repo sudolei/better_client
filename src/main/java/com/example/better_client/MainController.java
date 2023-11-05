@@ -330,7 +330,7 @@ public class MainController {
             public void run() {
 
                 try {
-                    Thread.sleep(3000);
+                    Thread.sleep(1000);
                     PdfMerger.reToOther(observableList);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -603,7 +603,7 @@ public class MainController {
             l.toArray(files);
 
             // 根据份数重置数组
-            String newFiles[] = MyUtil.resetArr(files);
+            String newFiles[] = MyUtil.resetByHcArr(files);
 
             // 插入的PDF文件路径
             String insertFile = selText + File.separator + value;
