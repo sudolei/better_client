@@ -19,6 +19,8 @@ import javafx.scene.text.TextFlow;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -104,7 +106,23 @@ public class MainController {
     @FXML
     private ListView<String> bmPdfList;
 
+    @FXML
+    private Button pdfFolderXlsBtn;
 
+    @FXML
+    private Label selPdfFolderXlsLabel;
+
+    @FXML
+    private Button selCreateXlsFolder;
+
+
+    @FXML
+    private Label createFolderXlsLabel;
+
+    @FXML
+    private Button byXlsBtn;
+
+    private static Logger logger = LogManager.getLogger(MainController.class);
     public void startLoading() {
         progressBar.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
     }
@@ -120,6 +138,7 @@ public class MainController {
      */
     @FXML
     void onCloseClick(ActionEvent event) {
+        logger.info("退出程序！");
         Platform.exit();
     }
 
@@ -130,6 +149,7 @@ public class MainController {
      */
     @FXML
     void onHelpClick(ActionEvent event) {
+        logger.info("关于我们！");
         String message = "1:合成功能实现了PDF合成，校验等功能\n" +
                 "2:背图实现台历等产品自动插入背面图片功能\n" +
                 "3:开发者--iskylei";
@@ -163,6 +183,7 @@ public class MainController {
      */
     @FXML
     void onDefClick(ActionEvent event) {
+        logger.info("设置默认路径");
         Stage stage = new Stage();
         // 创建新的Stage对象
         // 设置窗口标题
@@ -210,6 +231,7 @@ public class MainController {
      */
     @FXML
     void onSelectFileClick(ActionEvent event) {
+        logger.info("选择文件");
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("选择文件");
         if (!StringUtils.isEmpty(defFolder.getText())) {
@@ -288,18 +310,6 @@ public class MainController {
             AlertUtil.showAreaAlert(validateStr);
             return;
         }
-//        Set set = new HashSet();
-//        for (String str : observableList) {
-//            Map<String, Float> m = PdfUtil.getPdfWH(str);
-//            set.add(m);
-//        }
-//        // 如果尺寸有多个，不能合成
-//        if (set.size() != 1) {
-//            stopLoading();
-//            progressBar.setVisible(false);
-//            AlertUtil.showWarningAlert("您选择的文件尺寸不一致！！！");
-//            return;
-//        }
         // list转数组
         String files[] = new String[observableList.size()];
         observableList.toArray(files);
@@ -319,7 +329,7 @@ public class MainController {
         // 合并
         PdfMerger.mergePdf(newFiles, resultPdf);
         // 移动文件到其他文件夹
-//        PdfMerger.reToOtherFolder(observableList);
+        //PdfMerger.reToOtherFolder(observableList);
 
         AlertUtil.showSuccessAlert("合成成功！合成文件：" + resultPdf);
         stopLoading();
@@ -634,23 +644,6 @@ public class MainController {
             }
         }).start();
     }
-
-
-    @FXML
-    private Button pdfFolderXlsBtn;
-
-    @FXML
-    private Label selPdfFolderXlsLabel;
-
-    @FXML
-    private Button selCreateXlsFolder;
-
-
-    @FXML
-    private Label createFolderXlsLabel;
-
-    @FXML
-    private Button byXlsBtn;
 
     @FXML
     void pdfFolderXlsBtnClick(ActionEvent event) {

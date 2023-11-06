@@ -12,6 +12,8 @@ module com.example.better_client {
     requires com.almasb.fxgl.all;
     requires itextpdf;
     requires commons.io;
+    requires org.apache.logging.log4j;
+    requires org.apache.logging.log4j.core;
     opens com.example.better_client to javafx.fxml;
     exports com.example.better_client;
 }
